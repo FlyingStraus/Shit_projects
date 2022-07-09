@@ -1,0 +1,5 @@
+requests==2.27.1
+beautifulsoup4==4.10.0
+pyuseragents==1.0.5
+
+{"apiToken":"OB9kRs4qNUVSuncX4S80G93tp5s","params": {"event":"registration","user":{"email":{"zh9jpe@esiix.com"}},"referrer":{"referralCode":{"cun6ztl"}},"refSource":"copy"}}
