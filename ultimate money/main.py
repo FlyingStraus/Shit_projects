@@ -51,7 +51,7 @@ def send_response(url,mail):
     #print(session.options("https://app.viral-loops.com/api/v2/events").json)
 
     responce = session.post(url, json=post_ans)
-    print("Cookie is - ", session.cookies)
+    #print("Cookie is - ", session.cookies)
     #print(responce)
     return responce
 
@@ -84,7 +84,7 @@ def get_message_info(mail):
     #print(messages)
        
     print("Recieved the message")
-    print(message_id)
+    #print(message_id)
     message_id = message_id["id"]
     
     url = f'https://www.1secmail.com/api/v1/?action=readMessage&login={str(login)}&domain={str(domain)}&id={int(float(message_id))}'
@@ -111,7 +111,7 @@ def get_message_info(mail):
           # First we load existing data into a dict.
         file_data = json.load(file)
         # Join new_data with file_data inside emp_details
-        print(type(file_data))
+        #print(type(file_data))
         file_data["links"].append(new_line)
         # Sets file's current position at offset.
         file.seek(0)
