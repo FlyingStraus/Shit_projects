@@ -51,6 +51,7 @@ def send_response(url,mail):
     #print(session.options("https://app.viral-loops.com/api/v2/events").json)
 
     responce = session.post(url, json=post_ans)
+    print("Cookie is - ", session.cookies)
     #print(responce)
     return responce
 
@@ -67,14 +68,26 @@ def get_message_info(mail):
     #print(domain)
     url = f'https://www.1secmail.com/api/v1/?action=getMessages&login={str(login)}&domain={str(domain)}'
     #print(url)
+
     responce = session.get(url)
     messages = json.loads(responce.text)
-    #print(messages)
-    message_id = messages[-1]    
+    print("Waiting for email message")
+    while True:
+        try:
+            message_id = messages[-1] 
+            break
+        except:
+            responce = session.get(url)
+            messages = json.loads(responce.text)
+        
 
+    #print(messages)
+       
+    print("Recieved the message")
+    print(message_id)
     message_id = message_id["id"]
     
-    url = f'https://www.1secmail.com/api/v1/?action=readMessage&login={str(login)}&domain={str(domain)}&id={int(message_id)}'
+    url = f'https://www.1secmail.com/api/v1/?action=readMessage&login={str(login)}&domain={str(domain)}&id={int(float(message_id))}'
     #print(url)
     responce = session.get(url)
     message_text = responce.text
@@ -128,10 +141,10 @@ def main():
 
         #print(i)
 
-        proxy_auth = str(randint(1, 0x7fffffff)) + ':' + str(randint(1, 0x7fffffff))
-        proxies = {'http': 'socks5://{}@localhost:9150'.format(proxy_auth), 'https': 'socks5://{}@localhost:9150'.format(proxy_auth)}
+        #proxy_auth = str(randint(1, 0x7fffffff)) + ':' + str(randint(1, 0x7fffffff))
+        #proxies = {'http': 'socks5://{}@localhost:9150'.format(proxy_auth), 'https': 'socks5://{}@localhost:9150'.format(proxy_auth)}
 
-        session.proxies.update(proxies)
+        #session.proxies.update(proxies)
         session.headers.update({'user-agent': random_useragent(), 'Accept': '*/*', 'Accept-Language': 'ru,en;q=0.9,vi;q=0.8,es;q=0.7', 'Origin': 'https://https://ultimate.money/', 'Referer': 'https://https://ultimate.money/'})
 
 
@@ -180,7 +193,9 @@ def main():
 
 def extra_main():
     for i in range(int(ref_amount)):
+        
         main()
+        
     print("COMPLETED")
 
 
