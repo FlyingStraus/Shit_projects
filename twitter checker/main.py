@@ -42,7 +42,7 @@ for twitter in twitters_list:
         #Getting followers
         #getting ID
         btn = soup.find_all("button", {"id": "nav-friends-list-tab"})
-        print(btn)
+        
         code = btn[0]['onclick']
         code = code.split("'")
         code = code[1]
@@ -56,26 +56,28 @@ for twitter in twitters_list:
         url = "https://coinsguru.io/followedByList/ajax/?"
         data = f"draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=false&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=description&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=project_score&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=4&order%5B0%5D%5Bdir%5D=desc&start={page_start_poz}&length=100&search%5Bvalue%5D=&search%5Bregex%5D=false&slug={project_name}&username={project_name}&twitter_id={project_id}&categoryName=All&tagName=All&_={time.time()}"
         url = url+data
-        print(url)
-        responce = requests.get(url)
-        responce = responce.json()
-
-
-        followers = responce['data']
         list_followers= []
-        for item in followers[:10]:
-            list_followers.append(f' {item["profile_username"]} - {item["project_score"]}')
+        try:
+            responce = requests.get(url)
+            responce = responce.json()
 
-        print(followers[0])
+
+            followers = responce['data']
+            
+            for item in followers[:10]:
+                list_followers.append(f' {item["profile_username"]} - {item["project_score"]}')
+        except:
+            list_followers = "No top guys followed"
+
         
 
         info = f"{twitter} - {score} - {list_followers}\n"
         output_file.writelines(info)
 
+
     else:
-        print("Something wrong with score checker website")
-        print(responce)
-        print(url)
+        info = f"{twitter} - Not found\n"
+        output_file.writelines(info)
+    
 
 print("My work was done")
-
